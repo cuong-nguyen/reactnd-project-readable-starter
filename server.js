@@ -7,6 +7,7 @@ const config = require('./config')
 const categories = require('./categories')
 const posts = require('./posts')
 const comments = require('./comments')
+const auth = require('./auth')
 
 const app = express()
 
@@ -123,6 +124,12 @@ app.use((req, res, next) => {
         'Please provide an Authorization header to identify yourself (can be whatever you want)',
     })
   }
+})
+
+app.post('/auth', bodyParser.json(), (req, res) => {
+  auth
+    .authenticate(req.body.username, req.body.password)
+    .then(data => res.send(data), error => res.send(error))
 })
 
 app.get('/categories', (req, res) => {
